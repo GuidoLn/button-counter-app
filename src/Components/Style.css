@@ -1,0 +1,49 @@
+ 
+  
+.wrap-counter button {       
+    width: 100px;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    margin: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }   
+  
+  .btn-add {
+    background-color: #28a745;
+  }
+  
+  .btn-add:hover {
+    background-color: #1e7e34;
+  }
+  
+
+  .ButtonComponent {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px 0;
+  }
+  
+  .ButtonComponent button {
+    margin: 0 5px;
+  }
+  
+  
+  .btn-delete:last-child {
+    background-color: #dc3545;
+  }
+  
+  .btn-delete:last-child:hover {
+    background-color: #b21f2d;
+  }
+
+  .btn-increment {
+    background-color: #007BFF;;
+  }
+  
+  .btn-increment:hover {
+    background-color: #0056b3;
+  }
