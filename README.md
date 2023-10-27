@@ -18,6 +18,6 @@ npm install
 3. **Ejecución del programa:**  
 Inicia el front-end con el siguiente comando:
 
-npm run start
+npm start
 
 
