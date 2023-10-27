@@ -20,4 +20,6 @@ Inicia el front-end con el siguiente comando:
 
 npm start
 
+Preguntas frecuentes: Verificar que el back se levante en el puerto 3001, de lo contrario configurar el archivo .env con el puerto correspondiente
+
 
