@@ -1,74 +1,89 @@
 import React, { useState, useEffect } from 'react';
 import ButtonComponent from './ButtonComponent';
 import axios from 'axios';
-import './Style.css'
+import './Style.css';
 
-function WrapCounter({ text, count, increment, deleteFunc }) {
+function WrapCounter() {
     const URL = process.env.REACT_APP_BASE_URL;
     const [buttons, setButtons] = useState([]);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
-        fetchButtons();
-    }, []);
-
-    const fetchButtons = () => {
-        axios.get(`${URL}/Button`)
-            .then(response => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.get(`${URL}/Button`);
                 const { data, statusCode } = response.data;
                 if (statusCode === 200) {
                     setButtons(data);
                 }
-            })
-            .catch(error => {
+
+            } catch (error) {
                 if (error.response && error.response.data && error.response.data.statusCode === 404) {
                     setButtons([]);
-                } else {
-                    console.error("Hubo un error al obtener los botones:", error);
                 }
-            });
+            }
+        };
+
+        fetchData();
+    }, []);
+
+
+
+    const fetchButtons = async () => {
+        try {
+            const response = await axios.get(`${URL}/Button`);
+            const { data, statusCode } = response.data;
+            if (statusCode === 200) {
+                setButtons(data);
+            }
+
+        } catch (error) {
+            if (error.response && error.response.data && error.response.data.statusCode === 404) {
+                setButtons([]);
+            }
+        }
+
     };
 
-    const incrementCount = (buttonId) => {
-        axios.put(`${URL}/Button/${buttonId}`)
-            .then(response => {
-                const { statusCode } = response.data;
-                if (statusCode === 200) {
-                    fetchButtons();
-                }
-            })
-            .catch(error => {
-                console.error("Hubo un error al incrementar el conteo:", error);
-            });
+    const incrementCount = async (buttonId) => {
+        try {
+            const response = await axios.put(`${URL}/Button/${buttonId}`);
+            const { statusCode } = response.data;
+            if (statusCode === 200) {
+                await fetchButtons();
+            }
+        } catch (error) {
+            setError("Hubo un error al incrementar el conteo.");
+        }
     };
 
-    const addButton = () => {
-        axios.post(`${URL}/Button`)
-            .then(response => {
-                const { data, statusCode } = response.data;
-                if (statusCode === 200) {
-                    setButtons(prevButtons => [...prevButtons, data]);
-                }
-            })
-            .catch(error => {
-                console.error("Hubo un error al agregar un botón:", error);
-            });
+    const addButton = async () => {
+        try {
+            const response = await axios.post(`${URL}/Button`);
+            const { data, statusCode } = response.data;
+            if (statusCode === 200) {
+                setButtons(prevButtons => [...prevButtons, data]);
+            }
+        } catch (error) {
+            setError("Hubo un error al agregar un botón.");
+        }
     };
 
-    const deleteButton = (buttonId) => {
-        axios.delete(`${URL}/Button/${buttonId}`)
-            .then(response => {
-                const { statusCode } = response.data;
-                if (statusCode === 200) {
-                    fetchButtons();
-                }
-            })
-            .catch(error => {
-                console.error("Hubo un error al eliminar el botón:", error);
-            });
+    const deleteButton = async (buttonId) => {
+        try {
+            const response = await axios.delete(`${URL}/Button/${buttonId}`);
+            const { statusCode } = response.data;
+            if (statusCode === 200) {
+                await fetchButtons();
+            }
+        } catch (error) {
+            setError("Hubo un error al eliminar el botón.");
+        }
     };
 
     return (
         <div className='wrap-counter'>
+            {error && <p>{error}</p>}
             {buttons.length > 0 ? (
                 buttons.map(button => (
                     <ButtonComponent
